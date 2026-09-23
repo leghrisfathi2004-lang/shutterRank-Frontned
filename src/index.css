@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+/* enable class-based dark mode: <html class="dark"> */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  /* gaming/football vibe: emerald pitch + amber accents */
+  --color-brand-400: #34d399;
+  --color-brand-500: #10b981;
+  --color-brand-600: #059669;
+  --color-brand-700: #047857;
+  --color-accent-400: #fbbf24;
+  --color-accent-500: #f59e0b;
+}
+
+/* smooth theme swap */
+html {
+  color-scheme: light dark;
+}
+
+body {
+  @apply bg-white text-neutral-900 dark:bg-neutral-950 dark:text-neutral-100;
+}
