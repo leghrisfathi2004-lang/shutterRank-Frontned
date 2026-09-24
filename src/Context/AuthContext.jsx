@@ -18,7 +18,7 @@ function AuthProvider({ children }) {
       .then(setUser)
       .catch(() => setUser(null))
       .finally(() => setLoading(false));
-  }, [[]]);
+  }, []);
 
   const login = async (credentials) => {
     const { player } = await apiLogin(credentials);
@@ -37,7 +37,16 @@ function AuthProvider({ children }) {
     setUser(null);
   };
 
-  const value = { user, loading, login, register, logout };
+  const refreshUser = async () => {
+    try {
+      const player = await getMe();
+      setUser(player);
+    } catch {
+      setUser(null);
+    }
+  };
+
+  const value = { user, loading, login, register, logout, refreshUser };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
