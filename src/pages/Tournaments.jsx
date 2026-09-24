@@ -1,31 +1,31 @@
 import { useState } from 'react';
 import { Plus } from 'lucide-react';
 import { useAuth } from '../Context/AuthContext.jsx';
-import { listMatches } from '../api/matches.js';
+import { listTournaments } from '../api/tournaments.js';
 import useFetch from '../hooks/useFetch.js';
 import Loader from '../components/Loader.jsx';
 import ErrorMessage from '../components/ErrorMessage.jsx';
-import MatchesTable from '../components/MatchesTable.jsx';
+import TournamentsGrid from '../components/TournamentsGrid.jsx';
 import Button from '../components/Button.jsx';
 import PageHeader from '../components/PageHeader.jsx';
 import Pagination from '../components/Pagination.jsx';
-import CreateMatchModal from '../components/CreateMatchModal.jsx';
+import CreateTournamentModal from '../components/CreateTournamentModal.jsx';
 
-function Matches() {
+function Tournaments() {
   const { user } = useAuth();
   const [creating, setCreating] = useState(false);
   const [page, setPage] = useState(1);
-  const { data, error, loading, refetch } = useFetch(() => listMatches(page), [page]);
+  const { data, error, loading, refetch } = useFetch(() => listTournaments(page), [page]);
 
   return (
     <div>
       <PageHeader
-        title="Matches"
-        subtitle="Live scores, upcoming fixtures and results."
+        title="Tournaments"
+        subtitle="Knockout competitions and their prizes."
         action={
           user?.role === 'admin' && (
             <Button icon={Plus} onClick={() => setCreating(true)}>
-              Add match
+              Add tournament
             </Button>
           )
         }
@@ -37,14 +37,14 @@ function Matches() {
         <ErrorMessage message={error} onRetry={refetch} />
       ) : (
         <>
-          <MatchesTable matches={data.items} showRound />
+          <TournamentsGrid tournaments={data.items} />
           <Pagination page={data.page} pages={data.pages} onChange={setPage} />
         </>
       )}
 
-      {creating && <CreateMatchModal onClose={() => setCreating(false)} onSuccess={refetch} />}
+      {creating && <CreateTournamentModal onClose={() => setCreating(false)} onSuccess={refetch} />}
     </div>
   );
 }
 
-export default Matches;
+export default Tournaments;

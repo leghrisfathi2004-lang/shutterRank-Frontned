@@ -5,6 +5,8 @@ import Loader from '../components/Loader.jsx';
 import ErrorMessage from '../components/ErrorMessage.jsx';
 import Tabs from '../components/Tabs.jsx';
 import TeamsGrid from '../components/TeamsGrid.jsx';
+import PageHeader from '../components/PageHeader.jsx';
+import Pagination from '../components/Pagination.jsx';
 
 const TABS = [
   { value: 'all', label: 'All' },
@@ -20,22 +22,30 @@ const fetchers = {
 
 function Teams() {
   const [tab, setTab] = useState('all');
-  const { data: page, error, loading } = useFetch(() => fetchers[tab](1), [tab]);
+  const [page, setPage] = useState(1);
+  const { data, error, loading, refetch } = useFetch(() => fetchers[tab](page), [tab, page]);
+
+  // new tab → start again from page 1
+  const changeTab = (value) => {
+    setTab(value);
+    setPage(1);
+  };
 
   return (
-    <div className="space-y-4">
-      <h1 className="text-2xl font-bold">Teams</h1>
-      <Tabs tabs={TABS} active={tab} onChange={setTab} />
+    <div>
+      <PageHeader title="Teams" subtitle="Browse squads and join one that has room." />
+      <div className="mb-5">
+        <Tabs tabs={TABS} active={tab} onChange={changeTab} />
+      </div>
+
       {loading ? (
         <Loader />
       ) : error ? (
-        <ErrorMessage message={error} />
+        <ErrorMessage message={error} onRetry={refetch} />
       ) : (
         <>
-          <p className="text-sm text-neutral-500">
-            {page.total} total — page {page.page} / {page.pages}
-          </p>
-          <TeamsGrid teams={page.items} />
+          <TeamsGrid teams={data.items} />
+          <Pagination page={data.page} pages={data.pages} onChange={setPage} />
         </>
       )}
     </div>

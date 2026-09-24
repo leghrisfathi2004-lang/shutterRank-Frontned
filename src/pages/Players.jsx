@@ -1,22 +1,30 @@
+import { useState } from 'react';
 import { listPlayers } from '../api/players.js';
 import useFetch from '../hooks/useFetch.js';
 import Loader from '../components/Loader.jsx';
 import ErrorMessage from '../components/ErrorMessage.jsx';
 import PlayersTable from '../components/PlayersTable.jsx';
+import PageHeader from '../components/PageHeader.jsx';
+import Pagination from '../components/Pagination.jsx';
 
 function Players() {
-  const { data: page, error, loading } = useFetch(() => listPlayers(1), []);
-
-  if (loading) return <Loader />;
-  if (error) return <ErrorMessage message={error} />;
+  const [page, setPage] = useState(1);
+  const { data, error, loading, refetch } = useFetch(() => listPlayers(page), [page]);
 
   return (
-    <div className="space-y-4">
-      <h1 className="text-2xl font-bold">Players</h1>
-      <p className="text-sm text-neutral-500">
-        Page {page.page} / {page.pages} — {page.total} total
-      </p>
-      <PlayersTable players={page.items} />
+    <div>
+      <PageHeader title="Players" subtitle="Everyone on ShutterRank." />
+
+      {loading ? (
+        <Loader />
+      ) : error ? (
+        <ErrorMessage message={error} onRetry={refetch} />
+      ) : (
+        <>
+          <PlayersTable players={data.items} />
+          <Pagination page={data.page} pages={data.pages} onChange={setPage} />
+        </>
+      )}
     </div>
   );
 }

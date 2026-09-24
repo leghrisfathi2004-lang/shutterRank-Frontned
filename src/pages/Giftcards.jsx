@@ -1,33 +1,30 @@
 import { useState } from 'react';
 import { Plus } from 'lucide-react';
-import { useAuth } from '../Context/AuthContext.jsx';
-import { listMatches } from '../api/matches.js';
+import { listGiftcards } from '../api/giftcards.js';
 import useFetch from '../hooks/useFetch.js';
 import Loader from '../components/Loader.jsx';
 import ErrorMessage from '../components/ErrorMessage.jsx';
-import MatchesTable from '../components/MatchesTable.jsx';
+import GiftcardsTable from '../components/GiftcardsTable.jsx';
 import Button from '../components/Button.jsx';
 import PageHeader from '../components/PageHeader.jsx';
 import Pagination from '../components/Pagination.jsx';
-import CreateMatchModal from '../components/CreateMatchModal.jsx';
+import CreateGiftcardModal from '../components/CreateGiftcardModal.jsx';
 
-function Matches() {
-  const { user } = useAuth();
+// admin-only page (guarded by RequireAdmin in App.jsx)
+function Giftcards() {
   const [creating, setCreating] = useState(false);
   const [page, setPage] = useState(1);
-  const { data, error, loading, refetch } = useFetch(() => listMatches(page), [page]);
+  const { data, error, loading, refetch } = useFetch(() => listGiftcards(page), [page]);
 
   return (
     <div>
       <PageHeader
-        title="Matches"
-        subtitle="Live scores, upcoming fixtures and results."
+        title="Gift cards"
+        subtitle="Prizes available for tournaments."
         action={
-          user?.role === 'admin' && (
-            <Button icon={Plus} onClick={() => setCreating(true)}>
-              Add match
-            </Button>
-          )
+          <Button icon={Plus} onClick={() => setCreating(true)}>
+            Add gift card
+          </Button>
         }
       />
 
@@ -37,14 +34,14 @@ function Matches() {
         <ErrorMessage message={error} onRetry={refetch} />
       ) : (
         <>
-          <MatchesTable matches={data.items} showRound />
+          <GiftcardsTable giftcards={data.items} />
           <Pagination page={data.page} pages={data.pages} onChange={setPage} />
         </>
       )}
 
-      {creating && <CreateMatchModal onClose={() => setCreating(false)} onSuccess={refetch} />}
+      {creating && <CreateGiftcardModal onClose={() => setCreating(false)} onSuccess={refetch} />}
     </div>
   );
 }
 
-export default Matches;
+export default Giftcards;
