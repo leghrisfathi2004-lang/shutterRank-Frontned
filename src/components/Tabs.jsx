@@ -1,15 +1,16 @@
+// tabs = [{ value, label }], active = current value, onChange(value)
 function Tabs({ tabs, active, onChange }) {
   return (
-    <div className="flex gap-2 border-b border-neutral-200 dark:border-neutral-800">
+    <div className="inline-flex gap-1 rounded-lg bg-neutral-100 p-1 dark:bg-neutral-900">
       {tabs.map((t) => (
         <button
           key={t.value}
           type="button"
           onClick={() => onChange(t.value)}
-          className={`px-4 py-2 text-sm border-b-2 -mb-px transition ${
+          className={`h-8 rounded-md px-3 text-sm font-medium transition-colors ${
             active === t.value
-              ? 'border-brand-500 text-brand-600 dark:text-brand-400'
-              : 'border-transparent text-neutral-500 hover:text-neutral-800 dark:hover:text-neutral-200'
+              ? 'bg-white text-neutral-900 shadow-card dark:bg-neutral-800 dark:text-neutral-100'
+              : 'text-neutral-500 hover:text-neutral-800 dark:hover:text-neutral-200'
           }`}
         >
           {t.label}
