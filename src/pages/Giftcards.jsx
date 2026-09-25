@@ -9,10 +9,12 @@ import Button from '../components/Button.jsx';
 import PageHeader from '../components/PageHeader.jsx';
 import Pagination from '../components/Pagination.jsx';
 import CreateGiftcardModal from '../components/CreateGiftcardModal.jsx';
+import AssignGiftcardModal from '../components/AssignGiftcardModal.jsx';
 
 // admin-only page (guarded by RequireAdmin in App.jsx)
 function Giftcards() {
   const [creating, setCreating] = useState(false);
+  const [assigningId, setAssigningId] = useState(null); // id of the gift card being assigned
   const [page, setPage] = useState(1);
   const { data, error, loading, refetch } = useFetch(() => listGiftcards(page), [page]);
 
@@ -34,12 +36,15 @@ function Giftcards() {
         <ErrorMessage message={error} onRetry={refetch} />
       ) : (
         <>
-          <GiftcardsTable giftcards={data.items} />
+          <GiftcardsTable giftcards={data.items} onAssign={setAssigningId} />
           <Pagination page={data.page} pages={data.pages} onChange={setPage} />
         </>
       )}
 
       {creating && <CreateGiftcardModal onClose={() => setCreating(false)} onSuccess={refetch} />}
+      {assigningId && (
+        <AssignGiftcardModal giftcardId={assigningId} onClose={() => setAssigningId(null)} onSuccess={refetch} />
+      )}
     </div>
   );
 }

@@ -2,12 +2,13 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Lock, Mail, Trophy } from 'lucide-react';
 import { useAuth } from '../Context/AuthContext.jsx';
+import { login } from '../api/auth.js';
 import InputField from '../components/InputField.jsx';
 import Button from '../components/Button.jsx';
 import ErrorMessage from '../components/ErrorMessage.jsx';
 
 function Login() {
-  const { login } = useAuth();
+  const { refreshUser } = useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -19,7 +20,8 @@ function Login() {
     setError(null);
     setSubmitting(true);
     try {
-      await login({ email, password });
+      await login({ email, password }); // saves the token
+      await refreshUser(); // loads the user into the context
       navigate('/me');
     } catch (err) {
       setError(err.message);

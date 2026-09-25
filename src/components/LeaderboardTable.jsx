@@ -1,12 +1,9 @@
-import { useNavigate } from 'react-router-dom';
 import { BarChart3 } from 'lucide-react';
 import Avatar from './Avatar.jsx';
 import EmptyState from './EmptyState.jsx';
 
 // offset = how many players were on the previous pages (so rank keeps counting)
 function LeaderboardTable({ players, offset = 0 }) {
-  const navigate = useNavigate();
-
   if (players.length === 0) {
     return <EmptyState icon={BarChart3} title="No rankings yet" text="Scores will appear once players compete." />;
   }
@@ -23,11 +20,7 @@ function LeaderboardTable({ players, offset = 0 }) {
         </thead>
         <tbody className="divide-y divide-neutral-100 dark:divide-neutral-800">
           {players.map((p, i) => (
-            <tr
-              key={p._id}
-              onClick={() => navigate(`/players/${p._id}`)}
-              className="cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-800/50"
-            >
+            <tr key={p._id} className="hover:bg-neutral-50 dark:hover:bg-neutral-800/50">
               <td className="px-4 py-3 font-semibold text-neutral-500">{offset + i + 1}</td>
               <td className="px-4 py-3">
                 <div className="flex items-center gap-3">

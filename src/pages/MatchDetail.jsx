@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Flag, Info, Play, Plus } from 'lucide-react';
-import { getMatchProfile, startMatch, addGoal } from '../api/matches.js';
+import { getMatchProfile, startMatch } from '../api/matches.js';
 import useFetch from '../hooks/useFetch.js';
 import { useAuth } from '../Context/AuthContext.jsx';
 import Loader from '../components/Loader.jsx';
@@ -12,6 +12,7 @@ import Card from '../components/Card.jsx';
 import Avatar from '../components/Avatar.jsx';
 import Button from '../components/Button.jsx';
 import FinishMatchModal from '../components/FinishMatchModal.jsx';
+import AddGoalModal from '../components/AddGoalModal.jsx';
 
 function MatchDetail() {
   const { id } = useParams();
@@ -20,6 +21,7 @@ function MatchDetail() {
   const [busy, setBusy] = useState(false);
   const [actionError, setActionError] = useState(null);
   const [finishing, setFinishing] = useState(false);
+  const [scoringTeam, setScoringTeam] = useState(null); // team whose "+ Goal" was clicked
 
   if (loading) return <Loader />;
   if (error) return <ErrorMessage message={error} onRetry={refetch} />;
@@ -55,7 +57,7 @@ function MatchDetail() {
           <span className="italic text-neutral-400">TBD</span>
         )}
         {isAdmin && match.status === 'live' && team && (
-          <Button size="sm" variant="secondary" icon={Plus} disabled={busy} onClick={() => doAction(() => addGoal(id, team._id))}>
+          <Button size="sm" variant="secondary" icon={Plus} onClick={() => setScoringTeam(team)}>
             Goal
           </Button>
         )}
@@ -104,7 +106,7 @@ function MatchDetail() {
 
       {/* extra info — the backend populates winnerId, tournoiId and nextMatchId */}
       {(match.winnerId || match.tournoiId || match.nextMatchId) && (
-        <Card title="Details" icon={Info} className="max-w-xl">
+        <Card title="Details" icon={Info} className="mx-auto max-w-xl">
           <div className="space-y-2 text-sm">
             {match.winnerId && (
               <p>
@@ -132,6 +134,10 @@ function MatchDetail() {
             )}
           </div>
         </Card>
+      )}
+
+      {scoringTeam && (
+        <AddGoalModal matchId={id} team={scoringTeam} onClose={() => setScoringTeam(null)} onSuccess={refetch} />
       )}
 
       {finishing && (

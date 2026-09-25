@@ -1,16 +1,50 @@
-# React + Vite
+# ShutterRank — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Web app to manage a small competition: players join teams, teams play matches, and matches build knockout tournaments with a gift-card prize.
+Built with React for a school project. It talks to the ShutterRank backend (REST API + JWT).
 
-Currently, two official plugins are available:
+## Stack
+- **React 19** + **Vite**
+- **React Router 7**: pages and login protection
+- **Tailwind CSS v4**: styling, light / dark mode
+- **axios**: API calls, the token is sent automatically
+- **lucide-react**: icons
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Getting started
+1. Start the backend on `http://localhost:3000`.
+2. Create `.env` in this folder:
+   ```
+   VITE_API_URL=http://localhost:3000/api
+   ```
+3. Install and run:
+   ```bash
+   npm install
+   npm run dev      # → http://localhost:5173
+   ```
 
-## React Compiler
+Other scripts: `npm run build` (production build), `npm run lint`.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## How to use
+- **Visitor**: the home page offers *Sign in* / *Create an account*. Every other page needs an account.
+- **Player**:
+  - **Dashboard** (`/me`): create a team, or join an open one from **Teams**. You can also quit your team.
+  - Browse **Players**, **Leaderboard**, **Matches** and **Tournaments**.
+- **Admin**, in addition:
+  - **Matches**: create a match, start it, add goals (choose the scorer, who gets +1 score), finish it and pick the winner.
+  - **Tournaments**: create one with a gift-card prize and 2, 4, 8… teams. The bracket is generated automatically.
+  - **Gift cards**: add cards and assign them to a winning team.
 
-## Expanding the ESLint configuration
+## Structure
+```
+src/
+├── api/          # one file per resource: the functions that call the backend
+├── Context/      # AuthContext: the logged-in user, shared by every page
+├── hooks/        # useFetch: loads data and gives { data, error, loading, refetch }
+├── lib/          # token.js: saves the JWT in localStorage
+├── components/   # reusable UI (Button, Card, …), tables, grids and modals
+├── pages/        # one file per route (Home, Teams, MatchDetail, …)
+├── App.jsx       # the routes; RequireAuth / RequireAdmin protect them
+└── index.css     # Tailwind + theme colors
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Every page follows the same pattern: fetch with `useFetch`, then show a loader, an error, or the content.

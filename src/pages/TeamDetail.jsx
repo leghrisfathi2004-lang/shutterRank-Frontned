@@ -1,4 +1,4 @@
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Crown, Gift, Trophy, Users } from 'lucide-react';
 import { getTeamProfile } from '../api/teams.js';
 import { TEAM_MAX_PLAYERS } from '../config.js';
@@ -44,10 +44,10 @@ function TeamDetail() {
       <div className="grid gap-4 md:grid-cols-2">
         <Card title="Leader" icon={Crown}>
           {team.leader ? (
-            <Link to={`/players/${team.leader._id}`} className="flex items-center gap-3 hover:underline">
+            <div className="flex items-center gap-3">
               <Avatar name={team.leader.name} size="md" />
               <span className="font-medium">{team.leader.name}</span>
-            </Link>
+            </div>
           ) : (
             <p className="text-sm text-neutral-500">No leader.</p>
           )}
@@ -60,11 +60,11 @@ function TeamDetail() {
             <ul className="space-y-2">
               {members.map((p) => (
                 <li key={p._id}>
-                  <Link to={`/players/${p._id}`} className="flex items-center gap-3 text-sm hover:underline">
+                  <div className="flex items-center gap-3 text-sm">
                     <Avatar name={p.name} size="sm" />
                     <span className="flex-1 font-medium">{p.name}</span>
                     <span className="text-xs text-neutral-500">{p.score} pts</span>
-                  </Link>
+                  </div>
                 </li>
               ))}
             </ul>

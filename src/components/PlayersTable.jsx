@@ -1,11 +1,8 @@
-import { useNavigate } from 'react-router-dom';
 import { Users } from 'lucide-react';
 import Avatar from './Avatar.jsx';
 import EmptyState from './EmptyState.jsx';
 
 function PlayersTable({ players }) {
-  const navigate = useNavigate();
-
   if (players.length === 0) {
     return <EmptyState icon={Users} title="No players yet" text="Registered players will appear here." />;
   }
@@ -22,11 +19,7 @@ function PlayersTable({ players }) {
         </thead>
         <tbody className="divide-y divide-neutral-100 dark:divide-neutral-800">
           {players.map((p) => (
-            <tr
-              key={p._id}
-              onClick={() => navigate(`/players/${p._id}`)}
-              className="cursor-pointer hover:bg-neutral-50 dark:hover:bg-neutral-800/50"
-            >
+            <tr key={p._id} className="hover:bg-neutral-50 dark:hover:bg-neutral-800/50">
               <td className="px-4 py-3">
                 <div className="flex items-center gap-3">
                   <Avatar name={p.name} size="sm" />

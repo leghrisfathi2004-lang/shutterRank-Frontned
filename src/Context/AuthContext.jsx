@@ -1,5 +1,4 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { login as apiLogin, register as apiRegister } from '../api/auth.js';
 import { getMe } from '../api/players.js';
 import { getToken, clearToken } from '../lib/token.js';
 
@@ -20,23 +19,13 @@ function AuthProvider({ children }) {
       .finally(() => setLoading(false));
   }, []);
 
-  const login = async (credentials) => {
-    const { player } = await apiLogin(credentials);
-    setUser(player);
-    return player;
-  };
-
-  const register = async (fields) => {
-    const { player } = await apiRegister(fields);
-    setUser(player);
-    return player;
-  };
-
   const logout = () => {
     clearToken();
     setUser(null);
   };
 
+  // (re)load the logged-in user from /players/me
+  // → call it after login, register, join/quit/create team
   const refreshUser = async () => {
     try {
       const player = await getMe();
@@ -46,7 +35,7 @@ function AuthProvider({ children }) {
     }
   };
 
-  const value = { user, loading, login, register, logout, refreshUser };
+  const value = { user, loading, logout, refreshUser };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 

@@ -2,12 +2,13 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { Lock, Mail, Trophy, User } from 'lucide-react';
 import { useAuth } from '../Context/AuthContext.jsx';
+import { register } from '../api/auth.js';
 import InputField from '../components/InputField.jsx';
 import Button from '../components/Button.jsx';
 import ErrorMessage from '../components/ErrorMessage.jsx';
 
 function Register() {
-  const { register } = useAuth();
+  const { refreshUser } = useAuth();
   const navigate = useNavigate();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -20,7 +21,8 @@ function Register() {
     setError(null);
     setSubmitting(true);
     try {
-      await register({ name, email, password });
+      await register({ name, email, password }); // saves the token
+      await refreshUser(); // loads the user into the context
       navigate('/me');
     } catch (err) {
       setError(err.message);

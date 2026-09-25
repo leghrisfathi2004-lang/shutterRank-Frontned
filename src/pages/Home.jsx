@@ -22,7 +22,7 @@ function Home() {
         }}
       />
 
-      <div className="relative max-w-2xl">
+      <div className="relative mx-auto max-w-2xl text-center">
         <span className="inline-flex items-center gap-2 rounded-full border border-neutral-200 bg-white px-3 py-1 text-xs font-medium text-neutral-600 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300">
           <span className="h-1.5 w-1.5 rounded-full bg-brand-500" />
           Teams · Matches · Tournaments
@@ -30,11 +30,11 @@ function Home() {
         <h1 className="mt-5 text-4xl font-semibold tracking-tight sm:text-5xl">
           Compete, climb, <span className="text-brand-600 dark:text-brand-400">win.</span>
         </h1>
-        <p className="mt-4 max-w-lg text-neutral-600 dark:text-neutral-400">
+        <p className="mx-auto mt-4 max-w-lg text-neutral-600 dark:text-neutral-400">
           ShutterRank always shows you who's winning — maybe that's you.
         </p>
 
-        <div className="mt-8 flex flex-wrap gap-3">
+        <div className="mt-8 flex flex-wrap justify-center gap-3">
           {user ? (
             <Link to="/me" className={primaryBtn}>
               Go to dashboard

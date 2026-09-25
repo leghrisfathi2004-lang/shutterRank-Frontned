@@ -19,7 +19,7 @@ function Me() {
   const team = user.teamId; // populated by /players/me, or null
 
   return (
-    <div className="max-w-3xl space-y-6">
+    <div className="mx-auto max-w-3xl space-y-6">
       {/* profile */}
       <Card className="flex flex-wrap items-center gap-5">
         <Avatar name={user.name} size="xl" />
