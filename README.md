@@ -27,7 +27,7 @@ Other scripts: `npm run build` (production build), `npm run lint`.
 ## How to use
 - **Visitor**: the home page offers *Sign in* / *Create an account*. Every other page needs an account.
 - **Player**:
-  - **Dashboard** (`/me`): create a team, or join an open one from **Teams**. You can also quit your team.
+  - **Profile** (`/me`): create a team, or join an open one from **Teams**. You can also quit your team.
   - Browse **Players**, **Leaderboard**, **Matches** and **Tournaments**.
 - **Admin**, in addition:
   - **Matches**: create a match, start it, add goals (choose the scorer, who gets +1 score), finish it and pick the winner.

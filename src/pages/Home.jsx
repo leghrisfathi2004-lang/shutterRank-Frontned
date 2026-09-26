@@ -37,7 +37,7 @@ function Home() {
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           {user ? (
             <Link to="/me" className={primaryBtn}>
-              Go to dashboard
+              Go to my profile
               <ArrowRight size={16} />
             </Link>
           ) : (

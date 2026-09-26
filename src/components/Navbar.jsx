@@ -135,7 +135,7 @@ function Navbar() {
                     className="flex h-9 items-center gap-2 rounded-md px-3 text-sm hover:bg-neutral-100 dark:hover:bg-neutral-800"
                   >
                     <User size={16} aria-hidden className="text-neutral-400" />
-                    My dashboard
+                    My profile
                   </Link>
                   <button
                     type="button"
